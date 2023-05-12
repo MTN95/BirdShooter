@@ -284,6 +284,7 @@ namespace mEngine
                     AudioManager::GetInstance()->PlayAudio(shotSfx);
                 }
             }
+            // timer testing
             //if (PressedOnce && event.key.keysym.sym == SDLK_s)
             //{
             //    if (timer.isStarted())

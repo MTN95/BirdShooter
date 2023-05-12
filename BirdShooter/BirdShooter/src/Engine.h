@@ -43,7 +43,6 @@ namespace mEngine
 
 		inline SDL_Renderer* GetRenderer() { return m_Renderer; }
 
-		auto GetCurrentMousePosition();
 		bool isMouseOverEntity(Entity* entity, int mouseX, int mouseY);
 		bool IsEntityHit(Entity* entity);
 
