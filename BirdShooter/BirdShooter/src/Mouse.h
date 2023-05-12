@@ -23,7 +23,8 @@ namespace mEngine
 			SDL_ShowCursor(false);
 		}
 
-		void update() {
+		void update() 
+		{
 			SDL_GetMouseState(&rect.x, &rect.y);
 		}
 

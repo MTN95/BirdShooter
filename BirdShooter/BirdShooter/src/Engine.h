@@ -25,7 +25,7 @@ namespace mEngine
 		bool Init(const char* title, bool fullscreen);
 		void Clean();
 		void Quit();
-		void Update();
+		void Update(float deltaTime);
 
 		int ShowMenu(SDL_Surface* screen);
 

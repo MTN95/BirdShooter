@@ -116,7 +116,7 @@ namespace mEngine
         m_IsRunning = false;
     }
 
-    void Engine::Update()
+    void Engine::Update(float deltaTime)
     {
         if (timer->GetRemainingSeconds() <= 0)
         {
@@ -127,7 +127,7 @@ namespace mEngine
                 
         for (auto entity : m_Entities)
         {
-            entity->Update(0);
+            entity->Update(deltaTime);
             if (IsEntityHit(entity))
             {
                 ++m_Score;
@@ -335,8 +335,8 @@ namespace mEngine
             frameStart = SDL_GetTicks();
             
             Events();
-
-            Update();
+            Uint32 deltaTime = SDL_GetTicks() - frameStart;
+            Update(deltaTime);
          
             Render();
             
