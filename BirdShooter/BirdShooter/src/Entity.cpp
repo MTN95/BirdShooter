@@ -5,15 +5,12 @@
 namespace mEngine 
 {
 	mEngine::Entity::Entity(EntityData* data)
-		: m_TextureID(data->TextureID), m_Transform(data->Transform),
-		m_Width(data->Width), m_Height(data->Height), m_Flip(data->Flip)
 	{
-		m_Row = data->Row;
-		m_Frame = data->Frame;
-		m_FrameCount = data->FrameCount;
+		SetEntityData(data);
 		m_AnimSpeed = 80;
 		m_MoveDirection = 1.f;
 		m_MoveSpeed = 3.f;
+		m_Hittable = false;
 		if(!TextureManager::GetInstance()->LoadTexture(m_TextureID,data->Path))
 		{
 			std::cout << "Failed to load entity texture!\n" << '\n';
@@ -26,11 +23,33 @@ namespace mEngine
 	{
 
 	}
+
 	void mEngine::Entity::Update(float deltaTime)
 	{
 		// Calculate current frame based on animation speed
 		m_Frame = (SDL_GetTicks() / m_AnimSpeed) % m_FrameCount;
 
+		// WallsCollisionCheck();
+		
+		// m_Transform.TranslateXPosition(m_MoveDirection * m_MoveSpeed);
+	}
+
+	void mEngine::Entity::Render()
+	{
+		TextureManager::GetInstance()->Render(m_TextureID, m_Transform.getPosition().x,m_Transform.getPosition().y, m_Width, m_Height, m_Transform.getScale(),m_Flip);
+	}
+	void mEngine::Entity::RenderFrame()
+	{
+		TextureManager::GetInstance()->RenderFrame(m_TextureID, m_Transform.getPosition().x, m_Transform.getPosition().y, m_Width, m_Height, m_Row, m_Frame,m_Transform.getScale(), m_Flip);
+	}
+
+	void mEngine::Entity::Clean()
+	{
+		TextureManager::GetInstance()->CleanTexture(m_TextureID);
+	}
+
+	void Entity::WallsCollisionCheck()
+	{
 		if (m_Transform.getPosition().x >= SCREEN_WIDTH - m_Width)
 		{
 			m_MoveDirection *= -1.f;
@@ -55,22 +74,18 @@ namespace mEngine
 				m_Flip = SDL_FLIP_HORIZONTAL;
 			}
 		}
-		
-		m_Transform.TranslateXPosition(m_MoveDirection * m_MoveSpeed);
 	}
 
-	void mEngine::Entity::Render()
+	void Entity::SetEntityData(EntityData* data)
 	{
-		TextureManager::GetInstance()->Render(m_TextureID, m_Transform.getPosition().x,m_Transform.getPosition().y, m_Width, m_Height, m_Transform.getScale(),m_Flip);
-	}
-	void mEngine::Entity::RenderFrame()
-	{
-		TextureManager::GetInstance()->RenderFrame(m_TextureID, m_Transform.getPosition().x, m_Transform.getPosition().y, m_Width, m_Height, m_Row, m_Frame,m_Transform.getScale(), m_Flip);
-	}
-
-	void mEngine::Entity::Clean()
-	{
-		TextureManager::GetInstance()->CleanTexture(m_TextureID);
+		m_TextureID = data->TextureID;
+		m_Transform = data->Transform;
+		m_Width = data->Width;
+		m_Height = data->Height;
+		m_Flip = data->Flip;
+		m_Row = data->Row;
+		m_Frame = data->Frame;
+		m_FrameCount = data->FrameCount;
 	}
 
 }

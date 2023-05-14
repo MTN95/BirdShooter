@@ -8,8 +8,8 @@ namespace mEngine
     public:
         BlueBird(const std::string& id, const Math::Vec2D& position) : Entity(CreateBlueBirdData(id, position))
         {
-            // Any additional initialization code goes here
             BlueBirdCount++;
+            m_Hittable = true;
         }
 
         void Update(float deltaTime) override;

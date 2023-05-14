@@ -74,14 +74,17 @@ namespace mEngine
 
         m_Mouse = new Mouse(m_Renderer);
 
-        b = new BlueBird("b1",{400, 200});
-        m_Entities.push_back(b);
+        b = new BlueBird("b1",{400.f, 200.f});
+        m_ActiveEntities.push_back(b);
 
         p = new Pigeon("p1",{600.f, 500.f});
-        m_Entities.push_back(p);
+        m_ActiveEntities.push_back(p);
         p2 = new Pigeon("p2",{200.f, 100.f});
-        m_Entities.push_back(p2);
-
+        m_ActiveEntities.push_back(p2);
+        fallingPoo = new FallingBirdPoo("falling poo",{ 800.f, 100.f});
+        m_ActiveEntities.push_back(fallingPoo);
+        splatPoo = new SplatBirdPoo("splat poo", { 800.f,200.f });
+		m_ActiveEntities.push_back(splatPoo);
 
         m_IsRunning = true;
         return true;
@@ -89,7 +92,7 @@ namespace mEngine
 
     void Engine::Clean()
     {
-		for (auto entity : m_Entities) 
+		for (auto entity : m_ActiveEntities) 
         {
             entity->Clean();
             delete entity;
@@ -125,7 +128,7 @@ namespace mEngine
 
         m_Mouse->update();
                 
-        for (auto entity : m_Entities)
+        for (auto entity : m_ActiveEntities)
         {
             entity->Update(deltaTime);
             if (IsEntityHit(entity))
@@ -438,7 +441,7 @@ namespace mEngine
 		TextureManager::GetInstance()->RenderText(remainingTimeString, 25, 225, m_Fonts[1], { 0, 180, 0, 255 }, 2);
 
 		// Render entities
-		for (auto entity : m_Entities)
+		for (auto entity : m_ActiveEntities)
 		{
 			entity->RenderFrame();
 		}
@@ -468,6 +471,10 @@ namespace mEngine
     bool Engine::IsEntityHit(Entity* entity)
 	{
         bool success = false;
+        if (!entity->IsHittable())
+        {
+            return false;
+        }
 		int MouseX, MouseY;
 		Uint32 mouseState = SDL_GetMouseState(&MouseX, &MouseY);
         if (entity != nullptr)
@@ -480,7 +487,7 @@ namespace mEngine
 				    // sfx + fx + death anim ?
                     entity->Clean();
 					// remove entity from vector
-					m_Entities.erase(std::remove(m_Entities.begin(), m_Entities.end(), entity), m_Entities.end());
+					m_ActiveEntities.erase(std::remove(m_ActiveEntities.begin(), m_ActiveEntities.end(), entity), m_ActiveEntities.end());
                     success = true;
                 }
 		    }

@@ -51,6 +51,8 @@ namespace mEngine
 		void Render() override;
 		void RenderFrame() override;
 		void Clean() override;
+		void WallsCollisionCheck();
+		void SetEntityData(EntityData* data);
 
 		inline const Math::Vec2D GetPosition() const { return m_Transform.getPosition(); }
 		inline const float& GetScale() const { return m_Transform.getScale(); }
@@ -61,6 +63,8 @@ namespace mEngine
 
 		inline const unsigned int GetEntityCount() { return EntityCount; }
 
+		inline const bool& IsHittable() const { return m_Hittable; }
+
 	protected:
 		std::string m_TextureID;
 		Math::Transform m_Transform;
@@ -70,6 +74,8 @@ namespace mEngine
 		int m_AnimSpeed;
 		float m_MoveDirection;
 		float m_MoveSpeed;
+		
+		bool m_Hittable;
 
 		unsigned int EntityCount = 0;
 	};

@@ -7,6 +7,8 @@ namespace mEngine
     void mEngine::BlueBird::Update(float deltaTime)
     {
         Entity::Update(deltaTime);
+        WallsCollisionCheck();
+        m_Transform.TranslateXPosition(m_MoveDirection * m_MoveSpeed);
     }
 
     void mEngine::BlueBird::Render()

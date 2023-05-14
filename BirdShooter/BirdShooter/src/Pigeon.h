@@ -9,7 +9,8 @@ namespace mEngine
         Pigeon(const std::string& id,const Math::Vec2D& position) : Entity(CreatePigeonData(id,position))
         {
             PigeonCount += 1;
-            // Any additional initialization code goes here
+            
+            m_Hittable = true;
         }
 
         void Update(float deltaTime) override;
@@ -21,6 +22,7 @@ namespace mEngine
         void Clean() override;
 
         static inline const Uint32 GetPigeonCount() { return PigeonCount; }
+       
 
     private:
         EntityData* CreatePigeonData(const std::string& id,const Math::Vec2D& position)
@@ -29,5 +31,6 @@ namespace mEngine
             return new EntityData(id, "assets/pigeon_fiy-Sheet.png", transform, 32, 32, 0, 0, 7);
         }
         static Uint32 PigeonCount;
+        
     };
 }
