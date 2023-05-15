@@ -104,12 +104,12 @@ bool Timer::isPaused()
 
 void Timer::setDurationInMins(Uint32 minutes)
 {
-	mDuration = minutes * 60 * 1001;
+	mDuration = minutes * 60 * 1000;
 }
 
 void Timer::setDurationInSecs(Uint32 seconds)
 {
-	mDuration = seconds * 1001;
+	mDuration = seconds * 1000;
 }
 
 void Timer::AddSeconds(Uint32 seconds)

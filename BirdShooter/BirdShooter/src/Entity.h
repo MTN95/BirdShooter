@@ -65,6 +65,9 @@ namespace mEngine
 
 		inline const bool& IsHittable() const { return m_Hittable; }
 
+		inline bool& GetHasBeenHit() { return m_HasBeenHit; }
+		inline void SetHasBeenHit(bool b) { m_HasBeenHit = b; }
+
 	protected:
 		std::string m_TextureID;
 		Math::Transform m_Transform;
@@ -76,6 +79,7 @@ namespace mEngine
 		float m_MoveSpeed;
 		
 		bool m_Hittable;
+		bool m_HasBeenHit;
 
 		unsigned int EntityCount = 0;
 	};

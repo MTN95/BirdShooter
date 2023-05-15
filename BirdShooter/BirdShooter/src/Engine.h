@@ -9,7 +9,7 @@
 #include "Pigeon.h"
 #include "Mouse.h"
 #include "Timer.h"
-#include <vector>
+#include <map>
 
 
 namespace mEngine
@@ -55,12 +55,13 @@ namespace mEngine
 			return m_Window; 
 		}
 
+		inline std::map<std::string, Entity*> GetActiveEntities() { return m_ActiveEntitiesMap; }
+
 	private:
 		Engine() : m_Window(nullptr), m_Renderer(nullptr), m_IsRunning(false)
 		{
 			timer = nullptr;
 			countdownTime = 0;
-			p = nullptr;
 			p2 = nullptr;
 			b = nullptr;
 			fallingPoo = nullptr;
@@ -72,6 +73,7 @@ namespace mEngine
 			shotSfx = nullptr;
 			birdSfx = nullptr;
 			clickSfx = nullptr;
+			pooSplatSfx = nullptr;
 		}
 
 		static Engine* s_Instance;
@@ -82,8 +84,7 @@ namespace mEngine
 		Timer* timer;
 		int countdownTime;
 
-		//mEngine::Entity* player;
-		Pigeon* p; 
+		
 		Pigeon* p2; 
 		BlueBird* b; 
 		FallingBirdPoo* fallingPoo;
@@ -96,9 +97,11 @@ namespace mEngine
 		Mix_Chunk* shotSfx;
 		Mix_Chunk* birdSfx;
 		Mix_Chunk* clickSfx;
+		Mix_Chunk* pooSplatSfx;
 
 		Mouse* m_Mouse;
-		std::vector<Entity*> m_ActiveEntities;
+		//std::vector<Entity*> m_ActiveEntities;
+		std::map<std::string,Entity*> m_ActiveEntitiesMap;
 		int m_Score;
 	};
 }

@@ -1,9 +1,11 @@
 #include "FallingBirdPoo.h"
 #include "common.h"
+#include "Engine.h"
 
 void mEngine::FallingBirdPoo::Update(float deltaTime)
 {
 	Entity::Update(deltaTime);
+
 	m_Transform.TranslateYPosition(m_MoveDirection * m_MoveSpeed);
 }
 

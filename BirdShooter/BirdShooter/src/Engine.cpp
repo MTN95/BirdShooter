@@ -7,6 +7,7 @@
 #include "Entity.h"
 #include "Timer.h"
 #include <iostream>
+#include <vector>
 
 namespace mEngine
 {
@@ -74,29 +75,24 @@ namespace mEngine
 
         m_Mouse = new Mouse(m_Renderer);
 
-        b = new BlueBird("b1",{400.f, 200.f});
-        m_ActiveEntities.push_back(b);
+        
+        m_ActiveEntitiesMap["b1"] = new BlueBird("b1", { 400.f, 200.f });;        
+        m_ActiveEntitiesMap["p1"] = new Pigeon("p1", {600.f, 500.f});
+        m_ActiveEntitiesMap["p2"] = new Pigeon("p2", { 200.f, 100.f });;
+        m_ActiveEntitiesMap["falling poo"] = new FallingBirdPoo("falling poo", { 800.f, 100.f });
 
-        p = new Pigeon("p1",{600.f, 500.f});
-        m_ActiveEntities.push_back(p);
-        p2 = new Pigeon("p2",{200.f, 100.f});
-        m_ActiveEntities.push_back(p2);
-        fallingPoo = new FallingBirdPoo("falling poo",{ 800.f, 100.f});
-        m_ActiveEntities.push_back(fallingPoo);
-        splatPoo = new SplatBirdPoo("splat poo", { 800.f,200.f });
-		m_ActiveEntities.push_back(splatPoo);
-
+        //splatPoo = new SplatBirdPoo("splat poo", { 800.f,200.f });
+		
         m_IsRunning = true;
         return true;
     }
 
     void Engine::Clean()
     {
-		for (auto entity : m_ActiveEntities) 
+        for (auto& entity : m_ActiveEntitiesMap)
         {
-            entity->Clean();
-            delete entity;
-		}
+            entity.second->Clean();
+        }
 
         TextureManager::GetInstance()->Clean();
 
@@ -128,15 +124,46 @@ namespace mEngine
 
         m_Mouse->update();
                 
-        for (auto entity : m_ActiveEntities)
+        std::vector<std::string> entitiesToRemove;
+
+        auto fallingPooIterator = m_ActiveEntitiesMap.find("falling poo");
+		if (fallingPooIterator != m_ActiveEntitiesMap.end())
+		{
+			auto fallingPoo = fallingPooIterator->second;
+            auto pooPos = fallingPoo->GetPosition();
+            if (fallingPoo->GetPosition().y >= SCREEN_HEIGHT - (SCREEN_HEIGHT / 2.0))
+			{
+				if (!fallingPoo->GetHasBeenHit())
+				{
+					AudioManager::GetInstance()->PlayAudio(pooSplatSfx);
+					fallingPoo->SetHasBeenHit(true);
+                    entitiesToRemove.emplace_back(fallingPoo->GetID());
+                    m_ActiveEntitiesMap["splat poo"] = new SplatBirdPoo("splat poo", pooPos);
+                    
+                    //entitiesToRemove.emplace_back("splat poo");
+                }
+			}
+		}
+
+        
+        for (auto& entity : m_ActiveEntitiesMap)
         {
-            entity->Update(deltaTime);
-            if (IsEntityHit(entity))
+            entity.second->Update(deltaTime);
+            if (IsEntityHit(entity.second))
             {
                 ++m_Score;
                 AudioManager::GetInstance()->PlayAudio(birdSfx);
+                entitiesToRemove.emplace_back(entity.first);
             }
+            entity.second->SetHasBeenHit(false); // Reset the flag after processing
         }
+
+        // Remove entities outside the loop
+        for (const std::string& id : entitiesToRemove)
+        {
+            m_ActiveEntitiesMap.erase(id);
+        }
+        
     }
 
     int Engine::ShowMenu(SDL_Surface* screen)
@@ -286,31 +313,7 @@ namespace mEngine
                 {
                     AudioManager::GetInstance()->PlayAudio(shotSfx);
                 }
-            }
-            // timer testing
-            //if (PressedOnce && event.key.keysym.sym == SDLK_s)
-            //{
-            //    if (timer.isStarted())
-            //    {
-            //        timer.stop();
-            //    }
-            //    else
-            //    {
-            //        timer.start();
-            //    }
-            //}
-            //else if (PressedOnce && event.key.keysym.sym == SDLK_p)
-            //{
-            //    if (timer.isPaused())
-            //    {
-            //        timer.unpause();
-            //    }
-            //    else
-            //    {
-            //        timer.pause();
-            //        std::cout << "Timer paused. Time elapsed: " << timer.getTicks() / 1000.f << " seconds\n";
-            //    }
-            //}            
+            }           
         }
     }
 
@@ -405,17 +408,24 @@ namespace mEngine
         birdSfx = AudioManager::GetInstance()->LoadAudio("birdSfx", "assets/sfx/BirdSquake.wav");
         if (birdSfx == nullptr)
         {
-            std::cout << "Failed to load audio " << "birdSfx" << " Mix_Error: " << Mix_GetError() << '\n';
+            std::cout << "Failed to load audio birdSfx" << " Mix_Error: " << Mix_GetError() << '\n';
             return false;
         }
 
         clickSfx = AudioManager::GetInstance()->LoadAudio("clickSfx", "assets/sfx/click.wav");
         if (birdSfx == nullptr)
         {
-            std::cout << "Failed to load audio " << "birdSfx" << " Mix_Error: " << Mix_GetError() << '\n';
+            std::cout << "Failed to load audio birdSfx" << " Mix_Error: " << Mix_GetError() << '\n';
             return false;
         }
-        
+
+        pooSplatSfx = AudioManager::GetInstance()->LoadAudio("clickSfx", "assets/sfx/birdpoosfx.wav");
+        if (pooSplatSfx == nullptr)
+        {
+            std::cout << "Failed to load audio pooSplatSfx" << " Mix_Error: " << Mix_GetError() << '\n';
+            return false;
+        }
+
         return true;
     }
 
@@ -441,9 +451,9 @@ namespace mEngine
 		TextureManager::GetInstance()->RenderText(remainingTimeString, 25, 225, m_Fonts[1], { 0, 180, 0, 255 }, 2);
 
 		// Render entities
-		for (auto entity : m_ActiveEntities)
+		for (auto& entity : m_ActiveEntitiesMap)
 		{
-			entity->RenderFrame();
+			entity.second->RenderFrame();
 		}
 
 		// Render mouse
@@ -471,7 +481,7 @@ namespace mEngine
     bool Engine::IsEntityHit(Entity* entity)
 	{
         bool success = false;
-        if (!entity->IsHittable())
+        if (!entity->IsHittable() || entity->GetHasBeenHit())
         {
             return false;
         }
@@ -484,14 +494,14 @@ namespace mEngine
 			    if (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) 
                 {
                     timer->AddSeconds(10);
-				    // sfx + fx + death anim ?
                     entity->Clean();
-					// remove entity from vector
-					m_ActiveEntities.erase(std::remove(m_ActiveEntities.begin(), m_ActiveEntities.end(), entity), m_ActiveEntities.end());
+                    std::cout << "Entity ID: " << entity->GetID() << " has been hit!" << std::endl;
+                    entity->SetHasBeenHit(true);
                     success = true;
                 }
 		    }
         }
+        
         return success;
     }
 }

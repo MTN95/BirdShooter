@@ -7,6 +7,7 @@ namespace mEngine
 	mEngine::Entity::Entity(EntityData* data)
 	{
 		SetEntityData(data);
+		m_HasBeenHit = false;
 		m_AnimSpeed = 80;
 		m_MoveDirection = 1.f;
 		m_MoveSpeed = 3.f;
@@ -19,10 +20,7 @@ namespace mEngine
 		EntityCount++;
 	}
 
-	mEngine::Entity::~Entity()
-	{
-
-	}
+	mEngine::Entity::~Entity() = default;
 
 	void mEngine::Entity::Update(float deltaTime)
 	{
