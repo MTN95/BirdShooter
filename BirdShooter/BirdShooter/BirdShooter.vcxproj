@@ -176,6 +176,7 @@
     <ClCompile Include="src\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AnimationData.h" />
     <ClInclude Include="src\SplatBirdPoo.h" />
     <ClInclude Include="src\FallingBirdPoo.h" />
     <ClInclude Include="src\BlueBird.h" />

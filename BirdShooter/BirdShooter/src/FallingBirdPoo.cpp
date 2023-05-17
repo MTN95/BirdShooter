@@ -6,7 +6,7 @@ void mEngine::FallingBirdPoo::Update(float deltaTime)
 {
 	Entity::Update(deltaTime);
 
-	m_Transform.TranslateYPosition(m_MoveDirection * m_MoveSpeed);
+	m_AnimationData->Transform.TranslateYPosition(m_MoveDirection * m_MoveSpeed);
 }
 
 void mEngine::FallingBirdPoo::Render()

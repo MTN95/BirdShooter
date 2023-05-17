@@ -8,7 +8,7 @@ namespace mEngine
     {
         Entity::Update(deltaTime);
         WallsCollisionCheck();
-        m_Transform.TranslateXPosition(m_MoveDirection * m_MoveSpeed);
+        m_AnimationData->Transform.TranslateXPosition(m_MoveDirection * m_MoveSpeed);
     }
 
     void mEngine::Pigeon::Render()

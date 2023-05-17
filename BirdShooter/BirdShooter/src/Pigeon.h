@@ -25,10 +25,10 @@ namespace mEngine
        
 
     private:
-        EntityData* CreatePigeonData(const std::string& id,const Math::Vec2D& position)
+        AnimationData* CreatePigeonData(const std::string& id,const Math::Vec2D& position)
         {
             Math::Transform transform(position, 1.f, 0);
-            return new EntityData(id, "assets/pigeon_fiy-Sheet.png", transform, 32, 32, 0, 0, 7);
+            return new AnimationData(id, "assets/pigeon_fiy-Sheet.png", transform, 32, 32, 0, 0, 7);
         }
         static Uint32 PigeonCount;
         
