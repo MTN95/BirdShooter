@@ -453,7 +453,7 @@ namespace mEngine
 		// Render entities
 		for (auto& entity : m_ActiveEntitiesMap)
 		{
-			entity.second->RenderFrame();
+			entity.second->Render();
 		}
 
 		// Render mouse
