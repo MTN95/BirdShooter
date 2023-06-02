@@ -4,12 +4,12 @@
 #include <SDL_mixer.h>
 #include <memory>
 #include "BlueBird.h"
-#include "FallingBirdPoo.h"
-#include "SplatBirdPoo.h"
+#include "BirdPoo.h"
 #include "Pigeon.h"
 #include "Mouse.h"
 #include "Timer.h"
 #include <map>
+#include <vector>
 
 
 namespace mEngine
@@ -56,6 +56,10 @@ namespace mEngine
 		}
 
 		inline std::map<std::string, Entity*> GetActiveEntities() { return m_ActiveEntitiesMap; }
+		inline std::vector<std::string> GetEntitiesToRemove() { return m_EntitiesToRemove; }
+		inline void AddEntityToRemove(const std::string& id) { m_EntitiesToRemove.emplace_back(id); }
+
+		inline Mix_Chunk* GetPooSFX() { return pooSplatSfx; }
 
 	private:
 		Engine() : m_Window(nullptr), m_Renderer(nullptr), m_IsRunning(false)
@@ -65,7 +69,6 @@ namespace mEngine
 			p2 = nullptr;
 			b = nullptr;
 			fallingPoo = nullptr;
-			splatPoo = nullptr;
 			m_Mouse = nullptr;
 			m_Fonts[0] = nullptr;
 			m_Fonts[1] = nullptr;
@@ -87,8 +90,7 @@ namespace mEngine
 		
 		Pigeon* p2; 
 		BlueBird* b; 
-		FallingBirdPoo* fallingPoo;
-		SplatBirdPoo* splatPoo;
+		BirdPoo* fallingPoo;
 
 		bool m_IsRunning;
 
@@ -100,7 +102,7 @@ namespace mEngine
 		Mix_Chunk* pooSplatSfx;
 
 		Mouse* m_Mouse;
-		//std::vector<Entity*> m_ActiveEntities;
+		std::vector<std::string> m_EntitiesToRemove;
 		std::map<std::string,Entity*> m_ActiveEntitiesMap;
 		int m_Score;
 	};

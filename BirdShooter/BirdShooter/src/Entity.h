@@ -29,7 +29,8 @@ namespace mEngine
 		void RenderFrame() override;
 		void Clean() override;
 		void WallsCollisionCheck();
-		AnimationData* SetAnimationData(AnimationData* data);
+		void SetAnimationData(AnimationData* animData);
+		
 
 		inline const Math::Vec2D GetPosition() const { return m_AnimationData->Transform.getPosition(); }
 		inline const float& GetScale() const { return m_AnimationData->Transform.getScale(); }

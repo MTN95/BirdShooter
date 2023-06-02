@@ -42,10 +42,10 @@
     <ClCompile Include="src\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\FallingBirdPoo.cpp">
+    <ClCompile Include="src\AnimationManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\SplatBirdPoo.cpp">
+    <ClCompile Include="src\BirdPoo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,10 +89,13 @@
     <ClInclude Include="src\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\FallingBirdPoo.h">
+    <ClInclude Include="src\AnimationManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\SplatBirdPoo.h">
+    <ClInclude Include="src\AnimationData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BirdPoo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
