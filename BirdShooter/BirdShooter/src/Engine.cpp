@@ -125,8 +125,6 @@ namespace mEngine
         }
 
         m_Mouse->update();
-                
-        m_EntitiesToRemove;
 
         auto fallingPooIterator = m_ActiveEntitiesMap.find("falling poo");
 		if (fallingPooIterator != m_ActiveEntitiesMap.end())
@@ -140,10 +138,11 @@ namespace mEngine
 					BirdPoo* birdPooPtr = dynamic_cast<BirdPoo*>(fallingPoo);
 					if (birdPooPtr == nullptr)
 					{
-                        std::cout << "birdPooPtr is nullptr!\n LINE: 144\n";
+                        std::cout << "birdPooPtr is nullptr!\n";
 					}
+
 					birdPooPtr->HasCollided(m_ActiveEntitiesMap, pooSplatSfx);
-					
+                    m_EntitiesToRemove.emplace_back("falling poo");
                 }
 			}
 		}
@@ -162,7 +161,6 @@ namespace mEngine
             entity.second->SetHasBeenHit(false); // Reset the flag after processing
         }
 
-        // Remove entities outside the loop
         for (const std::string& id : m_EntitiesToRemove)
         {
             m_ActiveEntitiesMap.erase(id);

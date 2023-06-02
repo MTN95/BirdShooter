@@ -8,9 +8,13 @@ namespace mEngine
 	class BirdPoo : public Entity
 	{
 	public:
-		BirdPoo(const std::string& id, const Math::Vec2D& position) 
-			: Entity(CreateFallingPooData(id,position)) { }
-		
+		BirdPoo(const std::string& id, const Math::Vec2D& position, bool isSplatPoo = false)
+			: Entity
+			(
+				(isSplatPoo) ? CreateSplatPooData(id, position) : CreateFallingPooData(id, position)
+			)
+		{}
+
 		void Update(float deltaTime) override;
 
 		void Render() override;
@@ -29,7 +33,7 @@ namespace mEngine
 		AnimationData* CreateSplatPooData(const std::string& id, const Math::Vec2D& position)
 		{
 			Math::Transform transform(position, 0.5, 0);
-			return new AnimationData(id, "assets/hittingfloor_Birdpoop.png", transform, 64, 64, 0, 0, 8, 80);
+			return new AnimationData(id, "assets/hittingfloor_Birdpoop.png", transform, 64, 64, 0, 0, 8, 80,false);
 		}
 	};
 }

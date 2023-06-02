@@ -25,7 +25,7 @@ public:
 
 	AnimationData(const std::string& textureID, const std::string& path, mEngine::Math::Transform transform,
 		float width, float height, int row, int frame, int frameCount, int animSpeed, 
-		const SDL_RendererFlip& flip = SDL_FLIP_NONE, bool loop = true)
+			bool loop = true,const SDL_RendererFlip& flip = SDL_FLIP_NONE)
 	{
 		TextureID = textureID;
 		Path = path;

@@ -164,7 +164,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\AnimationManager.cpp" />
-    <ClCompile Include="src\SplatBirdPoo.cpp" />
     <ClCompile Include="src\BirdPoo.cpp" />
     <ClCompile Include="src\BlueBird.cpp" />
     <ClCompile Include="src\Pigeon.cpp" />
@@ -179,7 +178,6 @@
   <ItemGroup>
     <ClInclude Include="src\AnimationManager.h" />
     <ClInclude Include="src\AnimationData.h" />
-    <ClInclude Include="src\SplatBirdPoo.h" />
     <ClInclude Include="src\BirdPoo.h" />
     <ClInclude Include="src\BlueBird.h" />
     <ClInclude Include="src\Pigeon.h" />

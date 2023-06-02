@@ -5,7 +5,6 @@
 #include <memory>
 #include "BlueBird.h"
 #include "BirdPoo.h"
-#include "SplatBirdPoo.h"
 #include "Pigeon.h"
 #include "Mouse.h"
 #include "Timer.h"
@@ -70,7 +69,6 @@ namespace mEngine
 			p2 = nullptr;
 			b = nullptr;
 			fallingPoo = nullptr;
-			splatPoo = nullptr;
 			m_Mouse = nullptr;
 			m_Fonts[0] = nullptr;
 			m_Fonts[1] = nullptr;
@@ -93,7 +91,6 @@ namespace mEngine
 		Pigeon* p2; 
 		BlueBird* b; 
 		BirdPoo* fallingPoo;
-		SplatBirdPoo* splatPoo;
 
 		bool m_IsRunning;
 

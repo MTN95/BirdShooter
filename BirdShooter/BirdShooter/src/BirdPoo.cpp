@@ -28,17 +28,41 @@ namespace mEngine
 		Entity::Clean();
 	}
 
-	void BirdPoo::HasCollided(std::map<std::string, Entity*>& activeEntities,Mix_Chunk* hitSFX)
+	void BirdPoo::HasCollided(std::map<std::string, Entity*>& activeEntities, Mix_Chunk* hitSFX)
 	{
 		auto engine = mEngine::Engine::Getinstance();
 		engine->AddEntityToRemove(GetID());
-
 		activeEntities[GetID()]->Clean();
+
 		SetHasBeenHit(true);
 		AudioManager::GetInstance()->PlayAudio(hitSFX);
 
-		activeEntities["falling poo"] = new SplatBirdPoo("splat poo", GetPosition());
+		auto it = activeEntities.find("falling poo");
+		if (it == activeEntities.end())
+		{
+			std::cout << "Error: 'falling poo' entity not found in activeEntities map!\n";
+		}
+
+		BirdPoo* fallingPoo = dynamic_cast<BirdPoo*>(it->second);
+		if (fallingPoo == nullptr)
+		{
+			std::cout << "Error: Entity is not of type BirdPoo!\n";
+		}
+
+		fallingPoo = new BirdPoo(GetID(),GetPosition(),true);
+
 	}
 
+	//void BirdPoo::HasCollided(std::map<std::string, Entity*>& activeEntities,Mix_Chunk* hitSFX)
+	//{
+	//	auto engine = mEngine::Engine::Getinstance();
+	//	engine->AddEntityToRemove(GetID());
+
+	//	activeEntities[GetID()]->Clean();
+	//	SetHasBeenHit(true);
+	//	AudioManager::GetInstance()->PlayAudio(hitSFX);
+
+	//	activeEntities["falling poo"] = new SplatBirdPoo("splat poo", GetPosition());
+	//}
 
 }
