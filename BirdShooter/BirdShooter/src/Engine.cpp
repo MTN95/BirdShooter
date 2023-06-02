@@ -143,7 +143,7 @@ namespace mEngine
 					fallingPoo->SetHasBeenHit(true);
 					AudioManager::GetInstance()->PlayAudio(pooSplatSfx);
                     
-                    m_ActiveEntitiesMap["splat poo"] = new SplatBirdPoo("splat poo", pooPos);
+                    m_ActiveEntitiesMap["falling poo"] = new SplatBirdPoo("splat poo", pooPos);
                    
                 }
 			}
