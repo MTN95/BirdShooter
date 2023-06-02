@@ -1,7 +1,5 @@
 #pragma once
 #include "Entity.h"
-#include <SDL_mixer.h>
-#include <string>
 
 namespace mEngine
 {
@@ -23,7 +21,7 @@ namespace mEngine
 
 		void Clean() override;
 
-		void HasCollided(std::map<std::string, Entity*>& activeEntities, Mix_Chunk* hitSFX);
+		void HasCollided(std::map<std::string, Entity*>& activeEntities, Mix_Chunk* hitSFX) override;
 
 		AnimationData* CreateFallingPooData(const std::string& id, const Math::Vec2D& position)
 		{

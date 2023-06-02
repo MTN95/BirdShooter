@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "Engine.h"
 #include "TextureManager.h"
 #include "AnimationManager.h"
 #include "common.h"
@@ -26,7 +27,6 @@ namespace mEngine
 
 	void mEngine::Entity::Update(float deltaTime)
 	{
-
 	}
 
 	void mEngine::Entity::Render()
@@ -70,9 +70,38 @@ namespace mEngine
 		}
 	}
 
-	void Entity::SetAnimationData(AnimationData* animData)
+	void Entity::CheckIfHit()
 	{
-		m_AnimationData = animData;
+		auto engine = mEngine::Engine::Getinstance();
+		auto activeEntities = engine->GetActiveEntities();
+		auto entitiesToRemove = engine->GetEntitiesToRemove();
+		auto pooSFX = engine->GetPooSFX();
+
+
+		auto fallingPooIterator = activeEntities.find("falling poo");
+		if (fallingPooIterator != activeEntities.end())
+		{
+			auto fallingPoo = fallingPooIterator->second;
+			auto pooPos = fallingPoo->GetPosition();
+			BirdPoo* birdPooPtr = dynamic_cast<BirdPoo*>(fallingPoo);
+			//check if colliding with house / animals / trees / whatever
+			if (pooPos.y >= SCREEN_HEIGHT - (SCREEN_HEIGHT / 2.0))
+			{
+				if (!fallingPoo->GetHasBeenHit())
+				{
+					BirdPoo* birdPooPtr = dynamic_cast<BirdPoo*>(fallingPoo);
+					if (birdPooPtr == nullptr)
+					{
+						std::cout << "birdPooPtr is nullptr!\n";
+					}
+
+					birdPooPtr->HasCollided(activeEntities, pooSFX);
+					entitiesToRemove.emplace_back("falling poo");
+
+				}
+			}
+		}
 	}
+
 
 }

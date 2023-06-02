@@ -29,6 +29,8 @@ namespace mEngine
 		void Quit();
 		void Update(float deltaTime);
 
+		void CheckEntities(float deltaTime);
+
 		int ShowMenu(SDL_Surface* screen);
 
 		void Render();

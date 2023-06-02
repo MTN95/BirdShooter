@@ -30,13 +30,6 @@ namespace mEngine
 
 	void BirdPoo::HasCollided(std::map<std::string, Entity*>& activeEntities, Mix_Chunk* hitSFX)
 	{
-		auto engine = mEngine::Engine::Getinstance();
-		engine->AddEntityToRemove(GetID());
-		activeEntities[GetID()]->Clean();
-
-		SetHasBeenHit(true);
-		AudioManager::GetInstance()->PlayAudio(hitSFX);
-
 		auto it = activeEntities.find("falling poo");
 		if (it == activeEntities.end())
 		{
@@ -49,7 +42,10 @@ namespace mEngine
 			std::cout << "Error: Entity is not of type BirdPoo!\n";
 		}
 
+		SetHasBeenHit(true);
+		AudioManager::GetInstance()->PlayAudio(hitSFX);
 		fallingPoo = new BirdPoo(GetID(),GetPosition(),true);
 
 	}
+	
 }

@@ -78,10 +78,8 @@ namespace mEngine
         
         m_ActiveEntitiesMap["b1"] = new BlueBird("b1", { 400.f, 200.f });;        
         m_ActiveEntitiesMap["p1"] = new Pigeon("p1", {600.f, 500.f});
-        m_ActiveEntitiesMap["p2"] = new Pigeon("p2", { 200.f, 100.f });;
+        m_ActiveEntitiesMap["p2"] = new Pigeon("p2", { 200.f, 100.f });
         m_ActiveEntitiesMap["falling poo"] = new BirdPoo("falling poo", { 800.f, 100.f });
-
-        //splatPoo = new SplatBirdPoo("splat poo", { 800.f,200.f });
 		
         m_IsRunning = true;
         return true;
@@ -126,47 +124,56 @@ namespace mEngine
 
         m_Mouse->update();
 
-        auto fallingPooIterator = m_ActiveEntitiesMap.find("falling poo");
-		if (fallingPooIterator != m_ActiveEntitiesMap.end())
-		{
-			auto fallingPoo = fallingPooIterator->second;
-            auto pooPos = fallingPoo->GetPosition();
-            // check if colliding with house / animals / trees / whatever
-            if (pooPos.y >= SCREEN_HEIGHT - (SCREEN_HEIGHT / 2.0))
-			{
-				if (!fallingPoo->GetHasBeenHit())
-				{
-					BirdPoo* birdPooPtr = dynamic_cast<BirdPoo*>(fallingPoo);
-					if (birdPooPtr == nullptr)
-					{
-                        std::cout << "birdPooPtr is nullptr!\n";
-					}
+		AnimationManager::GetInstance()->Update(deltaTime);
 
-					birdPooPtr->HasCollided(m_ActiveEntitiesMap, pooSplatSfx);
-                    m_EntitiesToRemove.emplace_back("falling poo");
-                }
+        CheckEntities(deltaTime);
+        
+    }
+
+    void Engine::CheckEntities(float deltaTime)
+    {
+		for (auto& entity : m_ActiveEntitiesMap)
+		{
+			entity.second->Update(deltaTime);
+
+			if (IsEntityHit(entity.second))
+			{
+				++m_Score;
+				AudioManager::GetInstance()->PlayAudio(birdSfx);
+				m_EntitiesToRemove.emplace_back(entity.first);
 			}
+            entity.second->SetHasBeenHit(false); // Reset the flag after processing
 		}
 
-        AnimationManager::GetInstance()->Update(deltaTime);
-        
-        for (auto& entity : m_ActiveEntitiesMap)
+        auto fallingPooIterator = m_ActiveEntitiesMap.find("falling poo");
+        if (fallingPooIterator != m_ActiveEntitiesMap.end())
         {
-            entity.second->Update(deltaTime);
-            if (IsEntityHit(entity.second))
+            auto fallingPoo = fallingPooIterator->second;
+            auto pooPos = fallingPoo->GetPosition();
+            BirdPoo* birdPooPtr = dynamic_cast<BirdPoo*>(fallingPoo);
+            //check if colliding with house / animals / trees / whatever
+            if (pooPos.y >= SCREEN_HEIGHT - (SCREEN_HEIGHT / 2.0))
             {
-                ++m_Score;
-                AudioManager::GetInstance()->PlayAudio(birdSfx);
-                m_EntitiesToRemove.emplace_back(entity.first);
+                if (!fallingPoo->GetHasBeenHit())
+                {
+                    BirdPoo* birdPooPtr = dynamic_cast<BirdPoo*>(fallingPoo);
+                    if (birdPooPtr == nullptr)
+                    {
+                        std::cout << "birdPooPtr is nullptr!\n";
+                    }
+
+                    birdPooPtr->HasCollided(m_ActiveEntitiesMap, pooSplatSfx);
+                    m_EntitiesToRemove.emplace_back("falling poo");
+
+                }
             }
-            entity.second->SetHasBeenHit(false); // Reset the flag after processing
         }
+
 
         for (const std::string& id : m_EntitiesToRemove)
         {
             m_ActiveEntitiesMap.erase(id);
         }
-        
     }
 
     int Engine::ShowMenu(SDL_Surface* screen)

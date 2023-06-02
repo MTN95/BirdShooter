@@ -2,6 +2,9 @@
 
 #include "IObject.h"
 #include "AnimationData.h"
+#include <SDL_mixer.h>
+#include <string>
+#include <map>
 
 namespace mEngine
 {
@@ -28,9 +31,11 @@ namespace mEngine
 		void Render() override;
 		void RenderFrame() override;
 		void Clean() override;
-		void WallsCollisionCheck();
-		void SetAnimationData(AnimationData* animData);
 		
+		void WallsCollisionCheck();
+		virtual void CheckIfHit();
+		virtual void HasCollided(std::map<std::string, Entity*>& activeEntities, Mix_Chunk* hitSFX)
+		{}
 
 		inline const Math::Vec2D GetPosition() const { return m_AnimationData->Transform.getPosition(); }
 		inline const float& GetScale() const { return m_AnimationData->Transform.getScale(); }
@@ -45,6 +50,7 @@ namespace mEngine
 
 		inline bool& GetHasBeenHit() { return m_HasBeenHit; }
 		inline void SetHasBeenHit(bool b) { m_HasBeenHit = b; }
+
 
 	protected:
 		AnimationData* m_AnimationData;
