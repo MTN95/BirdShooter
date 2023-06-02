@@ -7,7 +7,7 @@ namespace mEngine
 {
 	mEngine::Entity::Entity(AnimationData* data)
 	{
-		m_AnimationData = SetAnimationData(data);
+		m_AnimationData = data;
 		m_HasBeenHit = false;
 		// m_AnimSpeed = 80;
 		m_MoveDirection = 1.f;
@@ -70,11 +70,9 @@ namespace mEngine
 		}
 	}
 
-	AnimationData* Entity::SetAnimationData(AnimationData* data)
+	void Entity::SetAnimationData(AnimationData* animData)
 	{
-		AnimationData* newData = data;
-
-		return newData;
+		m_AnimationData = animData;
 	}
 
 }
