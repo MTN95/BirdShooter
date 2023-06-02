@@ -163,7 +163,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\AnimationManager.cpp" />
     <ClCompile Include="src\SplatBirdPoo.cpp" />
     <ClCompile Include="src\FallingBirdPoo.cpp" />
     <ClCompile Include="src\BlueBird.cpp" />
@@ -177,7 +176,6 @@
     <ClCompile Include="src\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\AnimationManager.h" />
     <ClInclude Include="src\AnimationData.h" />
     <ClInclude Include="src\SplatBirdPoo.h" />
     <ClInclude Include="src\FallingBirdPoo.h" />

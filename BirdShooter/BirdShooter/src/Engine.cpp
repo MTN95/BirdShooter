@@ -1,7 +1,6 @@
 #include "Engine.h"
 #include "TextureManager.h"
 #include "AudioManager.h"
-#include "AnimationManager.h"
 #include "common.h"
 #include "Vec2D.h"
 #include <sstream>
@@ -99,8 +98,6 @@ namespace mEngine
 
         AudioManager::GetInstance()->Clean();
 
-        AnimationManager::GetInstance()->Clean();
-
         SDL_DestroyRenderer(m_Renderer);
         m_Renderer = nullptr;
 
@@ -138,18 +135,16 @@ namespace mEngine
 			{
 				if (!fallingPoo->GetHasBeenHit())
 				{
-                    entitiesToRemove.emplace_back(fallingPoo->GetID());
-                    m_ActiveEntitiesMap[fallingPoo->GetID()]->Clean();
-					fallingPoo->SetHasBeenHit(true);
 					AudioManager::GetInstance()->PlayAudio(pooSplatSfx);
-                    
+					fallingPoo->SetHasBeenHit(true);
+                    entitiesToRemove.emplace_back(fallingPoo->GetID());
                     m_ActiveEntitiesMap["splat poo"] = new SplatBirdPoo("splat poo", pooPos);
-                   
+                    
+                    //entitiesToRemove.emplace_back("splat poo");
                 }
 			}
 		}
 
-        AnimationManager::GetInstance()->Update(deltaTime);
         
         for (auto& entity : m_ActiveEntitiesMap)
         {
@@ -454,9 +449,6 @@ namespace mEngine
 		// Render remaining time
 		std::string remainingTimeString = timer->LogCountDown();
 		TextureManager::GetInstance()->RenderText(remainingTimeString, 25, 225, m_Fonts[1], { 0, 180, 0, 255 }, 2);
-
-
-        AnimationManager::GetInstance()->RenderAnimations();
 
 		// Render entities
 		for (auto& entity : m_ActiveEntitiesMap)

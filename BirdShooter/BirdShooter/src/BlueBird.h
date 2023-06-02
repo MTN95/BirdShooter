@@ -27,7 +27,7 @@ namespace mEngine
         AnimationData* CreateBlueBirdData(const std::string& id, const Math::Vec2D& position)
         {
             Math::Transform transform(position, 2.f, 0);
-            return new AnimationData(id, "assets/BirdSprite.png", transform, 16, 16, 1, 0, 8, 80,SDL_FLIP_HORIZONTAL);
+            return new AnimationData(id, "assets/BirdSprite.png", transform, 16, 16, 1, 0, 8, SDL_FLIP_HORIZONTAL);
         }
         static Uint32 BlueBirdCount;
     };

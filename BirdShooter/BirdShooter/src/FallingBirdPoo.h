@@ -21,7 +21,7 @@ namespace mEngine
 		AnimationData* CreateFallingPooData(const std::string& id, const Math::Vec2D& position)
 		{
 			Math::Transform transform(position, 1.0, 0);
-			return new AnimationData(id, "assets/fallingBirdpoop.png", transform, 32, 32, 0, 0, 4, 80);
+			return new AnimationData(id, "assets/fallingBirdpoop.png", transform, 32, 32, 0, 0, 4);
 		}
 	};
 }

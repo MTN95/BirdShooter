@@ -8,10 +8,7 @@ namespace mEngine
 	{
 	public:
 		SplatBirdPoo(const std::string& id, const Math::Vec2D& position)
-			: Entity(CreateFallingPooData(id, position)) 
-		{
-			m_AnimationData->Loop = false;
-		}
+			: Entity(CreateFallingPooData(id, position)) { }
 
 		void Update(float deltaTime) override;
 
@@ -25,7 +22,7 @@ namespace mEngine
 		AnimationData* CreateFallingPooData(const std::string& id, const Math::Vec2D& position)
 		{
 			Math::Transform transform(position, 0.5, 0);
-			return new AnimationData(id, "assets/hittingfloor_Birdpoop.png", transform, 64, 64, 0, 0, 8, 80);
+			return new AnimationData(id, "assets/hittingfloor_Birdpoop.png", transform, 64, 64, 0, 0, 8);
 		}
 	};
 }
