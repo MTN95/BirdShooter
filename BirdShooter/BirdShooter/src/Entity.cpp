@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "TextureManager.h"
+#include "AnimationManager.h"
 #include "common.h"
 
 namespace mEngine 
@@ -8,7 +9,7 @@ namespace mEngine
 	{
 		m_AnimationData = SetAnimationData(data);
 		m_HasBeenHit = false;
-		m_AnimSpeed = 80;
+		// m_AnimSpeed = 80;
 		m_MoveDirection = 1.f;
 		m_MoveSpeed = 3.f;
 		m_Hittable = false;
@@ -18,14 +19,13 @@ namespace mEngine
 		}
 		// Log();
 		EntityCount++;
+		AnimationManager::GetInstance()->AddAnimation(m_AnimationData);
 	}
 
 	mEngine::Entity::~Entity() = default;
 
 	void mEngine::Entity::Update(float deltaTime)
 	{
-		// Calculate current frame based on animation speed
-		m_AnimationData->Frame = (SDL_GetTicks() / m_AnimSpeed) % m_AnimationData->FrameCount;
 
 	}
 
@@ -35,9 +35,6 @@ namespace mEngine
 	}
 	void mEngine::Entity::RenderFrame()
 	{
-		TextureManager::GetInstance()->RenderFrame(m_AnimationData->TextureID, m_AnimationData->Transform.getPosition().x,
-			m_AnimationData->Transform.getPosition().y, m_AnimationData->Width, m_AnimationData->Height, m_AnimationData->Row, 
-			m_AnimationData->Frame, m_AnimationData->Transform.getScale(), m_AnimationData->Flip);
 	}
 
 	void mEngine::Entity::Clean()

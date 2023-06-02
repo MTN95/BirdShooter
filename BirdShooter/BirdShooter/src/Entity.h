@@ -48,7 +48,6 @@ namespace mEngine
 	protected:
 		AnimationData* m_AnimationData;
 		
-		int m_AnimSpeed;
 		float m_MoveDirection;
 		float m_MoveSpeed;
 		
