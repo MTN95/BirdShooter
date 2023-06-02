@@ -131,6 +131,7 @@ namespace mEngine
 		{
 			auto fallingPoo = fallingPooIterator->second;
             auto pooPos = fallingPoo->GetPosition();
+            // check if colliding with house / animals / trees / whatever
             if (pooPos.y >= SCREEN_HEIGHT - (SCREEN_HEIGHT / 2.0))
 			{
 				if (!fallingPoo->GetHasBeenHit())
