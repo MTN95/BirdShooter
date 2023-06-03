@@ -20,7 +20,7 @@ namespace mEngine
 
 		void Clean() override;
 
-		void HasCollided(std::map<std::string, Entity*>& activeEntities, Mix_Chunk* hitSFX) override;
+		void HasCollided(std::map<std::string, Entity*>& activeEntities, Mix_Chunk* hitSFX, BirdPoo* collidedPoo);
 
 		bool IsColliding();
 
@@ -34,5 +34,9 @@ namespace mEngine
 			Math::Transform transform(position, 0.5, 0);
 			return new AnimationData(id, "assets/hittingfloor_Birdpoop.png", transform, 64, 64, 0, 0, 8, 80,false);
 		}
+
+		BirdPoo() = delete;
+
+		bool operator==(const BirdPoo& other) const = delete;
 	};
 }

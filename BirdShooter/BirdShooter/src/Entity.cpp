@@ -10,7 +10,7 @@ namespace mEngine
 	{
 		m_EntityType = EntityType::None;
 		m_AnimationData = data;
-		m_HasBeenHit = false;
+		m_IsHit = false;
 		// m_AnimSpeed = 80;
 		m_MoveDirection = 1.f;
 		m_MoveSpeed = 3.f;
@@ -28,16 +28,7 @@ namespace mEngine
 
 	void mEngine::Entity::Update(float deltaTime)
 	{
-		if (GetEntityType() == EntityType::Poo)
-		{
-			BirdPoo* PooPtr = dynamic_cast<BirdPoo*>(this);
-			if (PooPtr == nullptr)
-			{
-				std::cerr << "PooPtr is nullptr!\n";
-			}
-			PooPtr->IsColliding();
-		}
-		
+
 	}
 
 	void mEngine::Entity::Render()
@@ -84,8 +75,8 @@ namespace mEngine
 	void Entity::CheckIfHit()
 	{
 		auto engine = mEngine::Engine::GetInstance();
-		auto activeEntities = engine->GetActiveEntities();
-		auto entitiesToRemove = engine->GetEntitiesToRemove();
+		auto& activeEntities = engine->GetActiveEntities();
+		auto& entitiesToRemove = engine->GetEntitiesToRemove();
 		auto pooSFX = engine->GetPooSFX();
 
 
@@ -98,7 +89,7 @@ namespace mEngine
 			//check if colliding with house / animals / trees / whatever
 			if (pooPos.y >= SCREEN_HEIGHT - (SCREEN_HEIGHT / 2.0))
 			{
-				if (!fallingPoo->GetHasBeenHit())
+				if (!fallingPoo->GetIsHit())
 				{
 					BirdPoo* birdPooPtr = dynamic_cast<BirdPoo*>(fallingPoo);
 					if (birdPooPtr == nullptr)
@@ -106,7 +97,7 @@ namespace mEngine
 						std::cout << "birdPooPtr is nullptr!\n";
 					}
 
-					birdPooPtr->HasCollided(activeEntities, pooSFX);
+					birdPooPtr->HasCollided(activeEntities, pooSFX,birdPooPtr);
 					entitiesToRemove.emplace_back("falling poo");
 
 				}

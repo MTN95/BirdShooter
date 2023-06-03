@@ -29,7 +29,7 @@ namespace mEngine
 		void Quit();
 		void Update(float deltaTime);
 
-		void CheckEntities(float deltaTime);
+		void UpdateEntities(float deltaTime);
 
 		int ShowMenu(SDL_Surface* screen);
 

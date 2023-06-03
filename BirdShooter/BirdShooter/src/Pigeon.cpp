@@ -31,17 +31,17 @@ namespace mEngine
 
     void Pigeon::Poop()
     {
-		std::cout << "Performing A Task! Taking A Shit!\n";
+        std::cout << "Performing A Task! Pigeon Is Taking A Shit!\n";
+
+        ++m_PoopCount;
         auto engine = mEngine::Engine::GetInstance();
-        auto activeEntities = engine->GetActiveEntities();
+        auto& activeEntities = engine->GetActiveEntities();
 
 		if (engine->IsEntityActive("poo" + PigeonCount))
         {
-            std::cerr << "Error, entity ID is taken, ID: poo" + PigeonCount << '\n';
+            std::cerr << "Error, entity ID is taken, ID: poo" + m_PoopCount << '\n';
         }
-        std::cout << "POOPING!\n";
-        activeEntities["poo" + PigeonCount] = new BirdPoo("poo" + PigeonCount, { GetPosition().x,GetPosition().y + 50 });
-    
+        activeEntities["poo" + m_PoopCount] = new BirdPoo("poo" + m_PoopCount, Math::Vec2D(GetPosition().x, GetPosition().y + 50));
     }
 
 }

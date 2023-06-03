@@ -40,9 +40,7 @@ namespace mEngine
 		void Clean() override;
 		
 		void WallsCollisionCheck();
-		virtual void CheckIfHit();
-		virtual void HasCollided(std::map<std::string, Entity*>& activeEntities, Mix_Chunk* hitSFX)
-		{}
+		void CheckIfHit();
 
 		inline const Math::Vec2D GetPosition() const { return m_AnimationData->Transform.getPosition(); }
 		inline const float& GetScale() const { return m_AnimationData->Transform.getScale(); }
@@ -55,8 +53,8 @@ namespace mEngine
 
 		inline const bool& IsHittable() const { return m_Hittable; }
 
-		inline bool& GetHasBeenHit() { return m_HasBeenHit; }
-		inline void SetHasBeenHit(bool b) { m_HasBeenHit = b; }
+		inline bool& GetIsHit() { return m_IsHit; }
+		inline void SetIsHit(bool b) { m_IsHit = b; }
 
 		inline EntityType SetEntityType(EntityType newType) { return m_EntityType = newType; }
 		inline EntityType GetEntityType() { return m_EntityType; }
@@ -70,7 +68,7 @@ namespace mEngine
 		float m_MoveSpeed;
 		
 		bool m_Hittable;
-		bool m_HasBeenHit;
+		bool m_IsHit;
 
 		unsigned int EntityCount = 0;
 	};

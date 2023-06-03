@@ -6,50 +6,40 @@
 namespace mEngine
 {
 
-	void mEngine::BirdPoo::Update(float deltaTime)
+	void BirdPoo::Update(float deltaTime)
 	{
 		Entity::Update(deltaTime);
-
 		m_AnimationData->Transform.TranslateYPosition(m_MoveDirection * m_MoveSpeed);
+		IsColliding();
 
-		//if (IsColliding())
-		//{
-		//	std::cout << "Poo Colliding!\n";
-		//}
 	}
 
-	void mEngine::BirdPoo::Render()
+	void BirdPoo::Render()
 	{
 		Entity::Render();
 	}
 
-	void mEngine::BirdPoo::RenderFrame()
+	void BirdPoo::RenderFrame()
 	{
 		Entity::RenderFrame();
 	}
 
-	void mEngine::BirdPoo::Clean()
+	void BirdPoo::Clean()
 	{
 		Entity::Clean();
 	}
 
-	void BirdPoo::HasCollided(std::map<std::string, Entity*>& activeEntities, Mix_Chunk* hitSFX)
-	{
-		auto it = activeEntities.find("falling poo");
-		if (it == activeEntities.end())
-		{
-			std::cout << "Error: 'falling poo' entity not found in activeEntities map!\n";
-		}
 
-		BirdPoo* fallingPoo = dynamic_cast<BirdPoo*>(it->second);
-		if (fallingPoo == nullptr)
+	void BirdPoo::HasCollided(std::map<std::string, Entity*>& activeEntities, Mix_Chunk* hitSFX, BirdPoo* collidedPoo)
+	{
+		if (collidedPoo == nullptr)
 		{
 			std::cout << "Error: Entity is not of type BirdPoo!\n";
 		}
 
-		SetHasBeenHit(true);
+		SetIsHit(true);
 		AudioManager::GetInstance()->PlayAudio(hitSFX);
-		fallingPoo = new BirdPoo(GetID(),GetPosition(),true);
+		collidedPoo = new BirdPoo(GetID(),GetPosition(),true);
 
 	}
 
@@ -74,10 +64,10 @@ namespace mEngine
 			// Check if colliding with house / animals / trees / whatever
 			if (pooPos.y >= SCREEN_HEIGHT - (SCREEN_HEIGHT / 2.0))
 			{
-				std::cout << "bird_Poo is HIT MAN!\n";
-				if (!fallingPoo->GetHasBeenHit())
+				std::cout << birdPooPtr->GetID() << " is HIT!\n";
+				if (!fallingPoo->GetIsHit())
 				{
-					birdPooPtr->HasCollided(activeEntities, engine->GetPooSFX());
+					birdPooPtr->HasCollided(activeEntities, engine->GetPooSFX(),this);
 					entitiesToRemove.emplace_back(GetID());
 					return true;
 				}

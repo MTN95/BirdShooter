@@ -76,10 +76,10 @@ namespace mEngine
         m_Mouse = new Mouse(m_Renderer);
 
         
-        m_ActiveEntitiesMap["b1"] = new BlueBird("b1", { 400.f, 200.f });        
+        //m_ActiveEntitiesMap["b1"] = new BlueBird("b1", { 400.f, 200.f });        
         m_ActiveEntitiesMap["p1"] = new Pigeon("p1", {600.f, 150.f});
 
-        m_ActiveEntitiesMap["falling poo"] = new BirdPoo("falling poo", { 800.f, 100.f });
+        //m_ActiveEntitiesMap["falling poo"] = new BirdPoo("falling poo", { 800.f, 100.f });
 		
         m_IsRunning = true;
         return true;
@@ -126,13 +126,13 @@ namespace mEngine
 
 		AnimationManager::GetInstance()->Update(deltaTime);
 
-        CheckEntities(deltaTime);
+        UpdateEntities(deltaTime);
         
     }
 
-    void Engine::CheckEntities(float deltaTime)
+    void Engine::UpdateEntities(float deltaTime)
     {
-		for (auto& entity : m_ActiveEntitiesMap)
+		for (const auto& entity : m_ActiveEntitiesMap)
 		{
 			entity.second->Update(deltaTime);
 
@@ -142,7 +142,7 @@ namespace mEngine
 				AudioManager::GetInstance()->PlayAudio(birdSfx);
 				m_EntitiesToRemove.emplace_back(entity.first);
 			}
-            entity.second->SetHasBeenHit(false); // Reset the flag after processing
+            entity.second->SetIsHit(false); // Reset the flag after processing
 		}
 
         for (const std::string& id : m_EntitiesToRemove)
@@ -467,7 +467,7 @@ namespace mEngine
     bool Engine::IsEntityHit(Entity* entity)
 	{
         bool success = false;
-        if (!entity->IsHittable() || entity->GetHasBeenHit())
+        if (!entity->IsHittable() || entity->GetIsHit())
         {
             return false;
         }
@@ -482,7 +482,7 @@ namespace mEngine
                     timer->AddSeconds(10);
                     entity->Clean();
                     std::cout << "Entity ID: " << entity->GetID() << " has been hit!" << std::endl;
-                    entity->SetHasBeenHit(true);
+                    entity->SetIsHit(true);
                     success = true;
                 }
 		    }
