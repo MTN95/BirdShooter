@@ -7,18 +7,17 @@ namespace mEngine
     class Pigeon : public Entity
     {
     public:
-        Pigeon(const std::string& id,const Math::Vec2D& position) : Entity(CreatePigeonData(id,position))
+        Pigeon(const std::string& id,const Math::Vec2D& position, int poopIntervalSeconds) : Entity(CreatePigeonData(id,position))
         {
             m_EntityType = EntityType::Pigeon;
             ++PigeonCount;
             
             m_Hittable = true;
-            m_PoopCount = 0;
 			// Set the timer task to be performed every 10 seconds
 			m_Timer.setTask([this]() {
 				// Perform the desired action
                 Poop();
-				}, 6);
+				}, poopIntervalSeconds);
 			// Start the timer
 			m_Timer.start();
         }
@@ -46,6 +45,6 @@ namespace mEngine
 
         Timer m_Timer;
         
-        int m_PoopCount;
+        static Uint8 m_PoopCount;
     };
 }

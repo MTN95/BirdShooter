@@ -4,6 +4,7 @@
 namespace mEngine
 {
     Uint32 Pigeon::PigeonCount = 0;
+    Uint8 Pigeon::m_PoopCount = 0;
 
     void mEngine::Pigeon::Update(float deltaTime)
     {
@@ -32,16 +33,17 @@ namespace mEngine
     void Pigeon::Poop()
     {
         std::cout << "Performing A Task! Pigeon Is Taking A Shit!\n";
-
         ++m_PoopCount;
         auto engine = mEngine::Engine::GetInstance();
         auto& activeEntities = engine->GetActiveEntities();
+        const std::string& pooStr = std::to_string(m_PoopCount);
 
-		if (engine->IsEntityActive("poo" + PigeonCount))
+		if (engine->IsEntityActive("poo" + pooStr))
         {
-            std::cerr << "Error, entity ID is taken, ID: poo" + m_PoopCount << '\n';
+            std::cerr << "Error, entity ID is taken, ID: poo" + pooStr << '\n';
         }
-        activeEntities["poo" + m_PoopCount] = new BirdPoo("poo" + m_PoopCount, Math::Vec2D(GetPosition().x, GetPosition().y + 50));
+        std::cout << "poo" + pooStr << '\n';
+        activeEntities["poo" + pooStr] = new BirdPoo("poo" + pooStr, Math::Vec2D(GetPosition().x, GetPosition().y + 50));
     }
 
 }

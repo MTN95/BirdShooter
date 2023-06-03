@@ -36,18 +36,21 @@ namespace mEngine
 		{
 			std::cout << "Error: Entity is not of type BirdPoo!\n";
 		}
+		auto& entitiesToRemove = mEngine::Engine::GetInstance()->GetEntitiesToRemove();
+		entitiesToRemove.emplace_back(GetID());
+		
 
 		SetIsHit(true);
-		AudioManager::GetInstance()->PlayAudio(hitSFX);
+		AudioManager::GetInstance()->PlayAudio(hitSFX);		
 		collidedPoo = new BirdPoo(GetID(),GetPosition(),true);
-
+		
 	}
 
 	bool BirdPoo::IsColliding()
 	{
 		auto engine = mEngine::Engine::GetInstance();
 		auto& activeEntities = engine->GetActiveEntities();
-		auto& entitiesToRemove = engine->GetEntitiesToRemove();
+		//auto& entitiesToRemove = engine->GetEntitiesToRemove();
 
 		auto fallingPooIterator = activeEntities.find(GetID());
 		if (fallingPooIterator != activeEntities.end())
@@ -62,13 +65,13 @@ namespace mEngine
 			}
 
 			// Check if colliding with house / animals / trees / whatever
-			if (pooPos.y >= SCREEN_HEIGHT - (SCREEN_HEIGHT / 2.0))
+			if (pooPos.y >= SCREEN_HEIGHT - (SCREEN_HEIGHT / 10.0))
 			{
-				std::cout << birdPooPtr->GetID() << " is HIT!\n";
+				
 				if (!fallingPoo->GetIsHit())
 				{
 					birdPooPtr->HasCollided(activeEntities, engine->GetPooSFX(),this);
-					entitiesToRemove.emplace_back(GetID());
+					//entitiesToRemove.emplace_back(GetID());
 					return true;
 				}
 			}

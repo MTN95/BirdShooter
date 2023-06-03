@@ -3,7 +3,6 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 #include <memory>
-#include "BlueBird.h"
 #include "BirdPoo.h"
 #include "Pigeon.h"
 #include "Mouse.h"
@@ -71,9 +70,6 @@ namespace mEngine
 		{
 			timer = nullptr;
 			countdownTime = 0;
-			p2 = nullptr;
-			b = nullptr;
-			fallingPoo = nullptr;
 			m_Mouse = nullptr;
 			m_Fonts[0] = nullptr;
 			m_Fonts[1] = nullptr;
@@ -91,11 +87,6 @@ namespace mEngine
 
 		Timer* timer;
 		int countdownTime;
-
-		
-		Pigeon* p2; 
-		BlueBird* b; 
-		BirdPoo* fallingPoo;
 
 		bool m_IsRunning;
 

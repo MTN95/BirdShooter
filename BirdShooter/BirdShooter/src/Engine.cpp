@@ -74,13 +74,23 @@ namespace mEngine
         countdownTime = 60;
 
         m_Mouse = new Mouse(m_Renderer);
+       
+		const int numPigeons = 100;
 
-        
-        //m_ActiveEntitiesMap["b1"] = new BlueBird("b1", { 400.f, 200.f });        
-        m_ActiveEntitiesMap["p1"] = new Pigeon("p1", {600.f, 150.f});
+		for (int i = 1; i <= numPigeons; i++)
+		{
+			int gridWidth = static_cast<int>(std::sqrt(numPigeons));
+			int gridHeight = numPigeons / gridWidth;
 
-        //m_ActiveEntitiesMap["falling poo"] = new BirdPoo("falling poo", { 800.f, 100.f });
-		
+			int column = (i - 1) % gridWidth;
+			int row = (i - 1) / gridWidth;
+
+			float x = static_cast<float>((column + 1) * (SCREEN_WIDTH/ (gridWidth + 1)));
+			float y = static_cast<float>((row + 1) * (SCREEN_HEIGHT/ (gridHeight + 1)));
+
+			m_ActiveEntitiesMap["pigeon_" + std::to_string(i)] = new Pigeon(("pigeon_" + std::to_string(i)), { x, y }, i);
+		}
+
         m_IsRunning = true;
         return true;
     }
