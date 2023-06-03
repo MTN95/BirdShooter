@@ -8,7 +8,14 @@
 
 namespace mEngine
 {
-
+	enum class EntityType
+	{
+		None,
+		Static,
+		Pigeon,
+		BlueBird,
+		Poo
+	};
 
 	class Entity : public IObject
 	{
@@ -51,10 +58,14 @@ namespace mEngine
 		inline bool& GetHasBeenHit() { return m_HasBeenHit; }
 		inline void SetHasBeenHit(bool b) { m_HasBeenHit = b; }
 
+		inline EntityType SetEntityType(EntityType newType) { return m_EntityType = newType; }
+		inline EntityType GetEntityType() { return m_EntityType; }
 
 	protected:
 		AnimationData* m_AnimationData;
 		
+		EntityType m_EntityType;
+
 		float m_MoveDirection;
 		float m_MoveSpeed;
 		

@@ -8,6 +8,7 @@ namespace mEngine
     public:
         BlueBird(const std::string& id, const Math::Vec2D& position) : Entity(CreateBlueBirdData(id, position))
         {
+            m_EntityType = EntityType::BlueBird;
             BlueBirdCount++;
             m_Hittable = true;
         }

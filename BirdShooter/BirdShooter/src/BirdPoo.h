@@ -7,11 +7,10 @@ namespace mEngine
 	{
 	public:
 		BirdPoo(const std::string& id, const Math::Vec2D& position, bool isSplatPoo = false)
-			: Entity
-			(
-				(isSplatPoo) ? CreateSplatPooData(id, position) : CreateFallingPooData(id, position)
-			)
-		{}
+			: Entity ((isSplatPoo) ? CreateSplatPooData(id, position) : CreateFallingPooData(id, position))
+		{
+			m_EntityType = EntityType::Poo;
+		}
 
 		void Update(float deltaTime) override;
 
@@ -22,6 +21,8 @@ namespace mEngine
 		void Clean() override;
 
 		void HasCollided(std::map<std::string, Entity*>& activeEntities, Mix_Chunk* hitSFX) override;
+
+		bool IsColliding();
 
 		AnimationData* CreateFallingPooData(const std::string& id, const Math::Vec2D& position)
 		{

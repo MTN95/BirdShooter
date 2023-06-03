@@ -8,6 +8,7 @@ namespace mEngine
 {
 	mEngine::Entity::Entity(AnimationData* data)
 	{
+		m_EntityType = EntityType::None;
 		m_AnimationData = data;
 		m_HasBeenHit = false;
 		// m_AnimSpeed = 80;
@@ -27,6 +28,16 @@ namespace mEngine
 
 	void mEngine::Entity::Update(float deltaTime)
 	{
+		if (GetEntityType() == EntityType::Poo)
+		{
+			BirdPoo* PooPtr = dynamic_cast<BirdPoo*>(this);
+			if (PooPtr == nullptr)
+			{
+				std::cerr << "PooPtr is nullptr!\n";
+			}
+			PooPtr->IsColliding();
+		}
+		
 	}
 
 	void mEngine::Entity::Render()
@@ -72,7 +83,7 @@ namespace mEngine
 
 	void Entity::CheckIfHit()
 	{
-		auto engine = mEngine::Engine::Getinstance();
+		auto engine = mEngine::Engine::GetInstance();
 		auto activeEntities = engine->GetActiveEntities();
 		auto entitiesToRemove = engine->GetEntitiesToRemove();
 		auto pooSFX = engine->GetPooSFX();

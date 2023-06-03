@@ -19,7 +19,7 @@ namespace mEngine
 	{
 	public:
 		
-		static inline Engine* Getinstance()
+		static inline Engine* GetInstance()
 		{
 			return s_Instance = (s_Instance != nullptr) ? s_Instance : new Engine();
 		}
@@ -57,9 +57,12 @@ namespace mEngine
 			return m_Window; 
 		}
 
-		inline std::map<std::string, Entity*> GetActiveEntities() { return m_ActiveEntitiesMap; }
-		inline std::vector<std::string> GetEntitiesToRemove() { return m_EntitiesToRemove; }
+		inline std::map<std::string, Entity*>& GetActiveEntities() { return m_ActiveEntitiesMap; }
+		inline std::vector<std::string>& GetEntitiesToRemove() { return m_EntitiesToRemove; }
+		inline Entity* GetActiveEntity(const std::string& id);
 		inline void AddEntityToRemove(const std::string& id) { m_EntitiesToRemove.emplace_back(id); }
+		bool IsEntityActive(const std::string& entityId);
+		
 
 		inline Mix_Chunk* GetPooSFX() { return pooSplatSfx; }
 

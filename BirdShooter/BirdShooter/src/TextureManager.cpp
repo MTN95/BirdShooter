@@ -16,7 +16,7 @@ namespace mEngine
             return false;
         }
 
-        SDL_Texture* newTexture = SDL_CreateTextureFromSurface(Engine::Getinstance()->GetRenderer(), loadedSurface);
+        SDL_Texture* newTexture = SDL_CreateTextureFromSurface(Engine::GetInstance()->GetRenderer(), loadedSurface);
         if (newTexture == nullptr)
         {
             std::cout << "Unable to create texture from loadedSurface! SDL Error: " << SDL_GetError();
@@ -61,7 +61,7 @@ namespace mEngine
         };
         SDL_FRect dstRect = { x, y, width * scale, height * scale};
 
-        SDL_RenderCopyExF(Engine::Getinstance()->GetRenderer(), m_TextureMap[id], &srcRect, &dstRect, 0, nullptr, flip);
+        SDL_RenderCopyExF(Engine::GetInstance()->GetRenderer(), m_TextureMap[id], &srcRect, &dstRect, 0, nullptr, flip);
     }
 	void TextureManager::RenderFrame(std::string id, float x, float y, float width, float height, int row, int frame, float scale, SDL_RendererFlip flip)
 	{
@@ -74,7 +74,7 @@ namespace mEngine
         };
 		SDL_FRect dstRect = { x, y, width * scale, height * scale };
 
-		SDL_RenderCopyExF(Engine::Getinstance()->GetRenderer(), m_TextureMap[id], &srcRect, &dstRect, 0, nullptr, flip);
+		SDL_RenderCopyExF(Engine::GetInstance()->GetRenderer(), m_TextureMap[id], &srcRect, &dstRect, 0, nullptr, flip);
 	}
 
 	void TextureManager::RenderText(const std::string& text, int x, int y, TTF_Font* font, SDL_Color color, const int& textScale, unsigned int number)
@@ -85,7 +85,7 @@ namespace mEngine
 			finalText += " " + std::to_string(number);
 		}
 
-		SDL_Renderer* renderer = mEngine::Engine::Getinstance()->GetRenderer();
+		SDL_Renderer* renderer = mEngine::Engine::GetInstance()->GetRenderer();
 		SDL_Surface* surface = CreateTextSurface(finalText, font, color);
 
 		if (surface == nullptr) 

@@ -76,9 +76,9 @@ namespace mEngine
         m_Mouse = new Mouse(m_Renderer);
 
         
-        m_ActiveEntitiesMap["b1"] = new BlueBird("b1", { 400.f, 200.f });;        
-        m_ActiveEntitiesMap["p1"] = new Pigeon("p1", {600.f, 500.f});
-        m_ActiveEntitiesMap["p2"] = new Pigeon("p2", { 200.f, 100.f });
+        m_ActiveEntitiesMap["b1"] = new BlueBird("b1", { 400.f, 200.f });        
+        m_ActiveEntitiesMap["p1"] = new Pigeon("p1", {600.f, 150.f});
+
         m_ActiveEntitiesMap["falling poo"] = new BirdPoo("falling poo", { 800.f, 100.f });
 		
         m_IsRunning = true;
@@ -144,31 +144,6 @@ namespace mEngine
 			}
             entity.second->SetHasBeenHit(false); // Reset the flag after processing
 		}
-
-        auto fallingPooIterator = m_ActiveEntitiesMap.find("falling poo");
-        if (fallingPooIterator != m_ActiveEntitiesMap.end())
-        {
-            auto fallingPoo = fallingPooIterator->second;
-            auto pooPos = fallingPoo->GetPosition();
-            BirdPoo* birdPooPtr = dynamic_cast<BirdPoo*>(fallingPoo);
-            //check if colliding with house / animals / trees / whatever
-            if (pooPos.y >= SCREEN_HEIGHT - (SCREEN_HEIGHT / 2.0))
-            {
-                if (!fallingPoo->GetHasBeenHit())
-                {
-                    BirdPoo* birdPooPtr = dynamic_cast<BirdPoo*>(fallingPoo);
-                    if (birdPooPtr == nullptr)
-                    {
-                        std::cout << "birdPooPtr is nullptr!\n";
-                    }
-
-                    birdPooPtr->HasCollided(m_ActiveEntitiesMap, pooSplatSfx);
-                    m_EntitiesToRemove.emplace_back("falling poo");
-
-                }
-            }
-        }
-
 
         for (const std::string& id : m_EntitiesToRemove)
         {
@@ -515,4 +490,27 @@ namespace mEngine
         
         return success;
     }
+    inline Entity* Engine::GetActiveEntity(const std::string& id)
+    {
+        if (IsEntityActive(id))
+        {
+            return m_ActiveEntitiesMap[id];
+        }
+        std::cout << "Entity not found in ActiveEntitiesMap .\n";
+        return nullptr;
+    }
+    bool Engine::IsEntityActive(const std::string& entityId)
+	{
+		// Search for the entity in the map
+		auto it = m_ActiveEntitiesMap.find(entityId);
+
+		// If the entity is found, return true
+		if (it != m_ActiveEntitiesMap.end())
+		{
+			return true;
+		}
+
+		// If the entity is not found, return false
+		return false;
+	}
 }

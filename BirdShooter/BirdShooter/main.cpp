@@ -6,7 +6,7 @@
 
 int main(int argc, char* argv[])
 {
-	mEngine::Engine* game = mEngine::Engine::Getinstance();
+	mEngine::Engine* game = mEngine::Engine::GetInstance();
 	
 	game->Init("test", false);
 	game->RunEngine();

@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "Timer.h"
 
 namespace mEngine
 {
@@ -8,9 +9,18 @@ namespace mEngine
     public:
         Pigeon(const std::string& id,const Math::Vec2D& position) : Entity(CreatePigeonData(id,position))
         {
+            m_EntityType = EntityType::Pigeon;
             PigeonCount += 1;
             
             m_Hittable = true;
+            
+			// Set the timer task to be performed every 10 seconds
+			m_Timer.setTask([this]() {
+				// Perform the desired action
+                Poop();
+				}, 10);
+			// Start the timer
+			m_Timer.start();
         }
 
         void Update(float deltaTime) override;
@@ -20,6 +30,8 @@ namespace mEngine
         void RenderFrame() override;
         
         void Clean() override;
+
+        void Poop();
 
         static inline const Uint32 GetPigeonCount() { return PigeonCount; }
        
@@ -31,6 +43,8 @@ namespace mEngine
             return new AnimationData(id, "assets/pigeon_fiy-Sheet.png", transform, 32, 32, 0, 0, 7,80);
         }
         static Uint32 PigeonCount;
+
+        Timer m_Timer;
         
     };
 }
