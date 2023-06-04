@@ -75,7 +75,7 @@ namespace mEngine
 
         m_Mouse = new Mouse(m_Renderer);
        
-		const int numPigeons = 100;
+		const int numPigeons = 10;
 
 		for (int i = 1; i <= numPigeons; i++)
 		{
@@ -293,20 +293,30 @@ namespace mEngine
         
         while (SDL_PollEvent(&event)) 
         {
-            bool PressedOnce = event.type == SDL_KEYDOWN && event.key.repeat == 0;
+            bool MousePressedOnce = event.type == SDL_MOUSEBUTTONDOWN && event.button.clicks == 1;
         
             if (event.type == SDL_QUIT)
             {
                 std::cout << "Quit\n";
                 Quit();
             }
-            else if (event.type == SDL_MOUSEBUTTONDOWN)
+            else if (MousePressedOnce)
             {
                 if (event.button.button == SDL_BUTTON_LEFT)
                 {
+                    std::cout << "holding button\n";
+                    isLeftMouseButtonHeld = true;
                     AudioManager::GetInstance()->PlayAudio(shotSfx);
                 }
             }           
+            else if (event.type == SDL_MOUSEBUTTONUP)
+            {
+                if (event.button.button == SDL_BUTTON_LEFT)
+                {
+                    std::cout << "released button\n";
+                    isLeftMouseButtonHeld = false;
+                }
+            }
         }
     }
 
@@ -474,32 +484,33 @@ namespace mEngine
 			mouseY >= entityRect.y && mouseY <= entityRect.y + entityRect.h;
 	}
 
-    bool Engine::IsEntityHit(Entity* entity)
+	bool Engine::IsEntityHit(Entity* entity)
 	{
-        bool success = false;
-        if (!entity->IsHittable() || entity->GetIsHit())
-        {
-            return false;
-        }
+		bool success = false;
+		if (!entity->IsHittable() || entity->GetIsHit())
+		{
+			return false;
+		}
 		int MouseX, MouseY;
 		Uint32 mouseState = SDL_GetMouseState(&MouseX, &MouseY);
-        if (entity != nullptr)
-        {
-		    if (isMouseOverEntity(entity, MouseX, MouseY))
-		    {
-			    if (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) 
-                {
-                    timer->AddSeconds(10);
-                    entity->Clean();
-                    std::cout << "Entity ID: " << entity->GetID() << " has been hit!" << std::endl;
-                    entity->SetIsHit(true);
-                    success = true;
-                }
-		    }
-        }
-        
-        return success;
-    }
+		if (entity != nullptr)
+		{
+			if (isLeftMouseButtonHeld && isMouseOverEntity(entity, MouseX, MouseY))
+			{
+				if (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT))
+				{
+					timer->AddSeconds(10);
+					entity->Clean();
+					std::cout << "Entity ID: " << entity->GetID() << " has been hit!" << std::endl;
+					entity->SetIsHit(true);
+					success = true;
+				}
+			}
+		}
+
+		return success;
+	}
+
     inline Entity* Engine::GetActiveEntity(const std::string& id)
     {
         if (IsEntityActive(id))

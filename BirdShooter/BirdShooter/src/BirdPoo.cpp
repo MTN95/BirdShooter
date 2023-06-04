@@ -50,8 +50,7 @@ namespace mEngine
 	{
 		auto engine = mEngine::Engine::GetInstance();
 		auto& activeEntities = engine->GetActiveEntities();
-		//auto& entitiesToRemove = engine->GetEntitiesToRemove();
-
+		
 		auto fallingPooIterator = activeEntities.find(GetID());
 		if (fallingPooIterator != activeEntities.end())
 		{
@@ -71,7 +70,6 @@ namespace mEngine
 				if (!fallingPoo->GetIsHit())
 				{
 					birdPooPtr->HasCollided(activeEntities, engine->GetPooSFX(),this);
-					//entitiesToRemove.emplace_back(GetID());
 					return true;
 				}
 			}

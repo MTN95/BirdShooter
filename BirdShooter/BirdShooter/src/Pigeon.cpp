@@ -32,7 +32,6 @@ namespace mEngine
 
     void Pigeon::Poop()
     {
-        std::cout << "Performing A Task! Pigeon Is Taking A Shit!\n";
         ++m_PoopCount;
         auto engine = mEngine::Engine::GetInstance();
         auto& activeEntities = engine->GetActiveEntities();
@@ -42,7 +41,6 @@ namespace mEngine
         {
             std::cerr << "Error, entity ID is taken, ID: poo" + pooStr << '\n';
         }
-        std::cout << "poo" + pooStr << '\n';
         activeEntities["poo" + pooStr] = new BirdPoo("poo" + pooStr, Math::Vec2D(GetPosition().x, GetPosition().y + 50));
     }
 
