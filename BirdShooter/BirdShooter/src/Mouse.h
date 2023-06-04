@@ -20,7 +20,7 @@ namespace mEngine
 			rect.y = 0;
 			rect.w = 50;
 			rect.h = 50;
-			SDL_ShowCursor(false);
+			SDL_ShowCursor(true);
 		}
 
 		void update() 

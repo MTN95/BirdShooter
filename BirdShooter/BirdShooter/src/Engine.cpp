@@ -74,22 +74,14 @@ namespace mEngine
         countdownTime = 60;
 
         m_Mouse = new Mouse(m_Renderer);
+        
        
-		const int numPigeons = 10;
-
-		for (int i = 1; i <= numPigeons; i++)
-		{
-			int gridWidth = static_cast<int>(std::sqrt(numPigeons));
-			int gridHeight = numPigeons / gridWidth;
-
-			int column = (i - 1) % gridWidth;
-			int row = (i - 1) / gridWidth;
-
-			float x = static_cast<float>((column + 1) * (SCREEN_WIDTH/ (gridWidth + 1)));
-			float y = static_cast<float>((row + 1) * (SCREEN_HEIGHT/ (gridHeight + 1)));
-
-			m_ActiveEntitiesMap["pigeon_" + std::to_string(i)] = new Pigeon(("pigeon_" + std::to_string(i)), { x, y }, i);
-		}
+		m_ActiveEntitiesMap["pigeon_1"] = new Pigeon("pigeon_1", { 400, 250 }, 5);
+		m_ActiveEntitiesMap["pigeon_2"] = new Pigeon("pigeon_2", { 450, 250 }, 5);
+		m_ActiveEntitiesMap["pigeon_3"] = new Pigeon("pigeon_3", { 500, 250 }, 5);
+		m_ActiveEntitiesMap["pigeon_4"] = new Pigeon("pigeon_4", { 550, 250 }, 5);
+		m_ActiveEntitiesMap["pigeon_5"] = new Pigeon("pigeon_5", { 600, 250 }, 5);
+		m_ActiveEntitiesMap["pigeon_6"] = new Pigeon("pigeon_6", { 650, 250 }, 5);
 
         m_IsRunning = true;
         return true;
@@ -293,30 +285,17 @@ namespace mEngine
         
         while (SDL_PollEvent(&event)) 
         {
-            bool MousePressedOnce = event.type == SDL_MOUSEBUTTONDOWN && event.button.clicks == 1;
-        
+            bool leftButtonClicked = event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT;
             if (event.type == SDL_QUIT)
             {
                 std::cout << "Quit\n";
                 Quit();
             }
-            else if (MousePressedOnce)
+            if (leftButtonClicked)
             {
-                if (event.button.button == SDL_BUTTON_LEFT)
-                {
-                    std::cout << "holding button\n";
-                    isLeftMouseButtonHeld = true;
-                    AudioManager::GetInstance()->PlayAudio(shotSfx);
-                }
-            }           
-            else if (event.type == SDL_MOUSEBUTTONUP)
-            {
-                if (event.button.button == SDL_BUTTON_LEFT)
-                {
-                    std::cout << "released button\n";
-                    isLeftMouseButtonHeld = false;
-                }
-            }
+                std::cout << "holding button\n";
+                AudioManager::GetInstance()->PlayAudio(shotSfx);
+            }  
         }
     }
 
@@ -486,30 +465,47 @@ namespace mEngine
 
 	bool Engine::IsEntityHit(Entity* entity)
 	{
-		bool success = false;
+		if (entity == nullptr)
+		{
+			std::cerr << "entity is nullptr in: IsEntityHit()\n";
+			return false;
+		}
+
 		if (!entity->IsHittable() || entity->GetIsHit())
 		{
 			return false;
 		}
-		int MouseX, MouseY;
-		Uint32 mouseState = SDL_GetMouseState(&MouseX, &MouseY);
-		if (entity != nullptr)
+
+		static bool leftButtonClicked = false;
+
+		int mouseX, mouseY;
+		Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
+
+		if (isMouseOverEntity(entity, mouseX, mouseY))
 		{
-			if (isLeftMouseButtonHeld && isMouseOverEntity(entity, MouseX, MouseY))
+			if (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT))
 			{
-				if (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT))
+				if (!leftButtonClicked)
 				{
-					timer->AddSeconds(10);
+					leftButtonClicked = true;
+					timer->AddSeconds(5);
 					entity->Clean();
-					std::cout << "Entity ID: " << entity->GetID() << " has been hit!" << std::endl;
+					std::cout << "Entity ID: " << entity->GetID() << " Is HIT!" << std::endl;
 					entity->SetIsHit(true);
-					success = true;
+					return true;
 				}
+			}
+			else
+			{
+				leftButtonClicked = false;
 			}
 		}
 
-		return success;
+		return false;
 	}
+
+
+
 
     inline Entity* Engine::GetActiveEntity(const std::string& id)
     {
