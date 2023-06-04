@@ -78,7 +78,6 @@ namespace mEngine
 			birdSfx = nullptr;
 			clickSfx = nullptr;
 			pooSplatSfx = nullptr;
-			isLeftMouseButtonHeld = false;
 		}
 
 		static Engine* s_Instance;
@@ -99,7 +98,6 @@ namespace mEngine
 		Mix_Chunk* pooSplatSfx;
 
 		Mouse* m_Mouse;
-		bool isLeftMouseButtonHeld;
 		std::vector<std::string> m_EntitiesToRemove;
 		std::map<std::string,Entity*> m_ActiveEntitiesMap;
 		int m_Score;
